@@ -4,6 +4,7 @@
   "AudioGroups": [
     {
       "$GMAudioGroup": "v1",
+      "%Name": "Default",
       "name": "audiogroup_default",
       "targets": -1
     }
@@ -62,9 +63,10 @@
   "TextureGroups": [
     {
       "$GMTextureGroup": "v1",
+      "%Name": "Default",
       "autocrop": true,
       "border": 2,
-      "compressFormat": " გაუჟ",
+      "compressFormat": "default",
       "directory": "textures",
       "groupParent": null,
       "isScaled": true,
