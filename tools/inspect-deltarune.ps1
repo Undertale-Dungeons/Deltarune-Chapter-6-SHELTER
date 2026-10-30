@@ -30,7 +30,8 @@ Write-Host "This script only reads files. It does not modify or upload anything.
 Write-Host ""
 
 foreach ($file in $files | Sort-Object FullName) {
-    $relative = [System.IO.Path]::GetRelativePath($GamePath, $file.FullName)
+    $root = $GamePath.TrimEnd([char[]]"\/")
+    $relative = $file.FullName.Substring($root.Length).TrimStart([char[]]"\/")
     $md5 = (Get-FileHash -LiteralPath $file.FullName -Algorithm MD5).Hash.ToLowerInvariant()
     $sha256 = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
 
