@@ -17,24 +17,6 @@
     "name": "Default"
   },
   "defaultScriptType": 0,
-  "Folders": [
-    {
-      "$GMFolder": "v1",
-      "%Name": "Objects",
-      "folderPath": "folders/Objects.yy",
-      "name": "Objects",
-      "resourceType": "GMFolder",
-      "resourceVersion": "2.0"
-    },
-    {
-      "$GMFolder": "v1",
-      "%Name": "Rooms",
-      "folderPath": "folders/Rooms.yy",
-      "name": "Rooms",
-      "resourceType": "GMFolder",
-      "resourceVersion": "2.0"
-    }
-  ],
   "ForcedPrefabProjectReferences": [],
   "IncludedFiles": [],
   "isEcma": false,
