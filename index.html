@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DELTARUNE: SHELTER — Prototype</title>
+<style>
+:root{color-scheme:dark;--bg:#08080d;--panel:#101018;--white:#f4f1f8;--muted:#aaa5b5;--gold:#f5d76e;--red:#e65b65}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 25%,#202033 0,#08080d 65%);color:var(--white);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;min-height:100vh;display:grid;place-items:center;padding:16px}
+main{width:min(900px,100%)}header{text-align:center;margin-bottom:12px}h1{font-size:clamp(20px,4vw,32px);letter-spacing:.14em;margin:0 0 5px}header p{margin:0;color:var(--muted);font-size:12px}
+#frame{border:4px solid #e8e5ed;background:#050508;padding:10px;box-shadow:0 0 0 4px #242332,0 18px 60px #0009}
+#screen{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#080811;image-rendering:pixelated}
+#hud{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;padding:9px 2px 1px}
+#dialog{border:3px solid var(--white);min-height:116px;margin-top:12px;padding:14px;background:#050508;line-height:1.55;font-size:clamp(13px,2vw,16px);white-space:pre-wrap}
+#choices{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button{font:inherit;color:var(--white);background:#11111c;border:2px solid #aaa5b5;padding:10px 14px;cursor:pointer}
+button:hover,button:focus{border-color:var(--gold);color:var(--gold);outline:none}button:disabled{opacity:.35;cursor:not-allowed}
+#help{color:var(--muted);font-size:11px;line-height:1.6;margin:10px 2px 0}
+#flash{color:var(--gold)}
+@media(max-width:520px){body{padding:8px}#frame{padding:5px;border-width:3px}#dialog{padding:10px;min-height:130px}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>DELTARUNE: SHELTER</h1><p>AN UNOFFICIAL FAN-MADE CHAPTER CONCEPT · PLAYABLE PROTOTYPE</p></header>
+<div id="frame"><canvas id="screen" width="640" height="360" aria-label="Game screen"></canvas><div id="hud"><span id="area">HOMETOWN · SOUTH PATH</span><span id="party">KRIS 290 HP　 SUSIE 340 HP</span></div></div>
+<div id="dialog" role="status" aria-live="polite"></div>
+<div id="choices"></div>
+<div id="help">MOVE: WASD / ARROWS　 CONFIRM: Z / ENTER　 BACK: X / ESC　 INTERACT: Z</div>
+</main>
+<script>
+(()=>{
+const canvas=document.getElementById('screen'),ctx=canvas.getContext('2d'),dialog=document.getElementById('dialog'),choices=document.getElementById('choices'),area=document.getElementById('area'),party=document.getElementById('party');
+const W=640,H=360;
+let scene='path',x=110,y=245,dialogue=null,dialogIndex=0,menu=0,phase='explore',battleTurn=0,hp=290,susieHP=340,enemyHP=180,mercy=0,bullet=[],tick=0,attack=0,keys={},last=0;
+const lines={
+ intro:["The path to the bunker is quiet.","Susie: So this is the place.","Kris, you can feel the air getting colder.","Susie hands you a heavy metal bar.","Susie: You ready?"],
+ door:["The bunker doors refuse to move.","Susie: Stand back. I got this.","The metal groans. A thin line of darkness appears.","A cold wind slips through the opening.","The dark swallows the path."],
+ mirror:["...","You open your eyes.","A room stretches in every direction.","Mirrors stand where walls should be.","Every reflection is a little late.","A book rests on a small table."],
+ book:["The cover reads: ENTRY 1.","The pages are filled with careful handwriting.","Most of the words have been crossed out.","One sentence remains: DO NOT FOLLOW THE SECOND YOU."],
+ ralsei:["???: Kris? Susie?","A familiar voice comes from somewhere behind the glass.","Ralsei: I was hoping you wouldn't have to come here.","Ralsei looks toward the endless reflections.","Ralsei: Something has been waiting for you."]
+};
+function text(s){dialog.textContent=s}
+function startDialogue(id,done){dialogue={items:lines[id],done};dialogIndex=0;phase='dialogue';text(dialogue.items[0]);choices.innerHTML='<button id="continue">CONTINUE ▸</button>';document.getElementById('continue').onclick=advance}
+function advance(){if(!dialogue)return;dialogIndex++;if(dialogIndex<dialogue.items.length){text(dialogue.items[dialogIndex]);return}const cb=dialogue.done;dialogue=null;choices.innerHTML='';phase='explore';text('');if(cb)cb()}
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x,y,w,h)}
+function drawText(t,x,y,size=12,color='#fff',align='left'){ctx.fillStyle=color;ctx.font=size+'px monospace';ctx.textAlign=align;ctx.fillText(t,x,y)}
+function character(px,py,color,kind='kris'){rect(px-8,py-24,16,22,color);rect(px-7,py-30,14,9,'#d9c9b6');rect(px-7,py-21,14,9,kind==='susie'?'#8d3b9d':'#244b8a');rect(px-7,py-2,5,5,'#17131d');rect(px+2,py-2,5,5,'#17131d')}
+function draw(){
+ tick++;ctx.clearRect(0,0,W,H);
+ if(scene==='path'||scene==='door'){
+  rect(0,0,W,H,'#121b26');rect(0,215,W,145,'#263b32');for(let i=0;i<20;i++){rect((i*71)%640,225+(i*31)%125,24,5,'#304a3a')}
+  rect(230,65,180,180,'#17151e');rect(246,80,148,165,'#36323d');rect(258,91,124,154,'#090a11');rect(270,102,100,143,'#17131b');rect(230,245,180,8,'#68606a');
+  drawText('HOMETOWN BUNKER',320,48,12,'#c5bdc9','center');character(x,y,'#202b59');character(155,250,'#783a91','susie');
+  if(scene==='door'){rect(258,102,3,143,'#b9b4c3');rect(264,102,2,143,'#050509')}
+ }else if(scene==='mirror'){
+  rect(0,0,W,H,'#0b0a15');for(let i=0;i<7;i++){let mx=28+i*91;rect(mx,35,62,250,'#37344c');rect(mx+5,40,52,240,'#a2a0bb');rect(mx+9,44,44,232,'#171626');rect(mx+13,48,36,224,'#39354f')}
+  rect(280,260,80,12,'#594b4a');rect(300,220,40,40,'#211e29');rect(308,207,24,17,'#bcb7c8');drawText('ENTRY 1',320,198,11,'#f5d76e','center');
+  character(320,320,'#202b59');
+  if(tick%80<40)rect(0,0,W,H,'#fff',);
+ }else if(scene==='strange'){
+  rect(0,0,W,H,'#11101b');for(let i=0;i<30;i++){let xx=(i*83+tick*.2)%660;rect(xx,40+(i*47)%270,2,2,'#6e6a8c')}
+  rect(80,245,480,6,'#51445d');character(270,245,'#202b59');character(390,245,'#783a91','susie');character(490,245,'#b7b5c7');
+  drawText('SOMEWHERE BEYOND THE MIRRORS',320,48,12,'#d8d2e7','center');
+ }else if(scene==='battle'){drawBattle()}
+ requestAnimationFrame(draw)
+}
+function drawBattle(){
+ rect(0,0,W,H,'#080811');drawText('A QUIET ROOM WITH NO EXIT',320,28,12,'#aaa5b5','center');
+ // enemy vessel silhouette
+ rect(294,83,52,80,'#050507');rect(303,70,34,30,'#050507');rect(307,92,7,4,'#eee');rect(326,92,7,4,'#eee');rect(310,130,20,45,'#050507');
+ drawText('YOU',320,190,15,'#f4f1f8','center');drawText('HP '+enemyHP+' / 180',320,211,11,'#f5d76e','center');
+ rect(110,225,420,115,'#09090e');rect(115,230,410,105,'#050508');rect(315,265,10,10,'#f5d76e');
+ for(const b of bullet){rect(b.x,b.y,8,8,'#f4f1f8')}
+ drawText('KRIS '+hp+' HP',25,330,12,'#f4f1f8');drawText('SUSIE '+susieHP+' HP',510,330,12,'#f4f1f8','right');
+}
+function showChoices(items,fn){choices.innerHTML='';items.forEach((s,i)=>{let b=document.createElement('button');b.textContent=(i===menu?'▶ ':'')+s;b.onclick=()=>fn(i);choices.appendChild(b)})}
+function beginBattle(){scene='battle';phase='battlemenu';battleTurn=0;enemyHP=180;hp=290;mercy=0;text('A figure steps out from the dark.\nYOU: You came all this way.');battleMenu()}
+function battleMenu(){phase='battlemenu';bullet=[];text('YOU is watching. What will you do?');showChoices(['FIGHT','ACT','ITEM','SPARE'],i=>{menu=i;if(i===0)fight();if(i===1)actMenu();if(i===2){text('You have no items.');battleMenu()}if(i===3)spare()})}
+function actMenu(){phase='actmenu';text('Choose an action.');showChoices(['CHECK','ASK WHY','WAIT','BACK'],i=>{if(i===3){battleMenu();return}if(i===0){text('YOU — ATK ??? DEF ???\nA familiar shape with an unfamiliar purpose.');battleMenu();return}if(i===1){mercy+=1;text('Kris asks why the vessel is here.\nYOU: You already know.');enemyTurn();return}if(i===2){mercy+=2;text('You wait. The room seems to listen.\nYOU: ...interesting.');enemyTurn()}})}
+function fight(){if(mercy<2){text('Your attack rebounds.\nYOU: You still do not understand.');enemyTurn();return}enemyHP-=45;attack++;text('Kris finds an opening. YOU loses 45 HP.');if(enemyHP<=0){enemyHP=0;victory();return}enemyTurn()}
+function spare(){if(mercy>=3){victory(true)}else{text('YOU is not ready to stop.');enemyTurn()}}
+function enemyTurn(){phase='dodge';bullet=[];let n=0;const interval=setInterval(()=>{if(phase!=='dodge'){clearInterval(interval);return}bullet.push({x:130+Math.random()*380,y:235,vy:2+Math.random()*2});n++;if(n>15)clearInterval(interval)},220);let start=Date.now();const dodge=setInterval(()=>{if(phase!=='dodge'){clearInterval(dodge);return}const dt=Date.now()-start;if(dt>4500){clearInterval(dodge);bullet=[];battleMenu();return}for(const b of bullet){b.y+=b.vy;if(Math.abs(b.x-320)<12&&Math.abs(b.y-270)<12){hp=Math.max(0,hp-8);b.y=400;text('A light grazes Kris. 8 HP lost.\nMove with the arrow keys!')}}bullet=bullet.filter(b=>b.y<350)},40)}
+function victory(spared=false){phase='afterbattle';scene='strange';choices.innerHTML='';text(spared?'YOU lowers its weapon.\nYOU: You chose to listen. That may matter.':'The figure dissolves into drifting light.\nSomething remains where it stood.');let b=document.createElement('button');b.textContent='CONTINUE';b.onclick=()=>startDialogue('ralsei',()=>{text('END OF CURRENT DEMO\nThank you for playing DELTARUNE: SHELTER.');phase='end'});choices.appendChild(b)}
+function interact(){if(phase==='dialogue'){advance();return}if(phase==='explore'){if(scene==='path'){if(x>200&&x<430&&y>160){startDialogue('door',()=>{scene='mirror';startDialogue('mirror',()=>{text('The book is within reach. Press Z to read it.');})})}else{text('The bunker is down the path.')}}else if(scene==='mirror'){startDialogue('book',()=>{scene='strange';startDialogue('ralsei',()=>{beginBattle()})})}else if(scene==='strange'){beginBattle()}}}
+function update(){if(phase==='explore'){let speed=2.2;if(keys.ArrowLeft||keys.a)x-=speed;if(keys.ArrowRight||keys.d)x+=speed;if(keys.ArrowUp||keys.w)y-=speed;if(keys.ArrowDown||keys.s)y+=speed;x=Math.max(30,Math.min(610,x));y=Math.max(150,Math.min(330,y))}if(phase==='dodge'){if(keys.ArrowLeft||keys.a){} }}
+function loop(){update();requestAnimationFrame(loop)}
+window.addEventListener('keydown',e=>{keys[e.key]=true;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(['z','Z','Enter',' '].includes(e.key))interact();if(e.key==='x'||e.key==='Escape'){if(phase==='actmenu'||phase==='battlemenu')battleMenu()}});window.addEventListener('keyup',e=>keys[e.key]=false);
+canvas.addEventListener('click',()=>interact());
+text('The path to the bunker waits at the bottom of Hometown.\nPress Z or ENTER to begin.');draw();loop();
+})();
+</script>
+</body>
+</html>
