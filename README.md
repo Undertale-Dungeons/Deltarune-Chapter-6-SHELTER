@@ -4,7 +4,7 @@
 
 DELTARUNE: SHELTER is a story-driven RPG fan project built around a mysterious trip to the bunker at the edge of Hometown. Kris and Susie enter a place that seems to stretch far beyond its walls, where reflections, strange messages, and familiar faces may not be what they seem.
 
-> **Status:** Early project setup. Story, encounters, and mechanics described here are design goals and may change as development continues. This repository is not affiliated with or endorsed by Toby Fox.
+> **Status:** Playable browser prototype. This is an early, incomplete fan game and is not affiliated with or endorsed by Toby Fox.
 
 ## Story premise
 
@@ -22,7 +22,7 @@ As the journey continues, the pair encounter unsettling creatures, unexpected al
 - Major boss encounters, including **YOU** and a later fusion-inspired boss
 - Multiple battle outcomes that can affect later scenes
 
-All features are planned concepts until they are implemented in the game.
+The current prototype includes the Hometown path, bunker entrance sequence, mirror room, ENTRY 1, a Ralsei scene, and a first boss encounter against YOU. Later chapters, extra enemies, and the full PATIENCE SOUL system are not implemented yet.
 
 ## Characters and encounters
 
@@ -39,7 +39,7 @@ All features are planned concepts until they are implemented in the game.
 
 Battles are intended to reward paying attention and choosing ACT options thoughtfully. Some opponents may punish rushing straight into FIGHT. Learn an enemy's behavior, experiment with ACT, and watch for changes in its dialogue.
 
-The PATIENCE SOUL mechanic is planned around timing and defensive play. Exact controls and timings will be documented once they are implemented.
+The current boss prototype uses ACT choices to build understanding before FIGHT becomes effective. During the enemy turn, move the gold heart with the arrow keys or WASD to avoid incoming attacks. The full PATIENCE SOUL mechanic is still planned.
 
 ## Hints
 
