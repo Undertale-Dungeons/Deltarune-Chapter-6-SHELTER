@@ -4,8 +4,11 @@
   "AudioGroups": [
     {
       "$GMAudioGroup": "v1",
-      "%Name": "Default",
+      "%Name": "audiogroup_default",
+      "exportDir": "",
       "name": "audiogroup_default",
+      "resourceType": "GMAudioGroup",
+      "resourceVersion": "2.0",
       "targets": -1
     }
   ],
@@ -13,7 +16,7 @@
     "children": [],
     "name": "Default"
   },
-  "exportDir": "",
+  "defaultScriptType": 0,
   "Folders": [
     {
       "$GMFolder": "v1",
@@ -32,6 +35,7 @@
       "resourceVersion": "2.0"
     }
   ],
+  "ForcedPrefabProjectReferences": [],
   "IncludedFiles": [],
   "isEcma": false,
   "LibraryEmitters": [],
@@ -39,14 +43,6 @@
     "IDEVersion": "2024.11.0.179"
   },
   "name": "SHELTER",
-  "RoomOrderNodes": [
-    {
-      "roomId": {
-        "name": "room_shelter",
-        "path": "rooms/room_shelter/room_shelter.yy"
-      }
-    }
-  ],
   "resources": [
     {
       "id": {
@@ -56,6 +52,14 @@
     },
     {
       "id": {
+        "name": "room_shelter",
+        "path": "rooms/room_shelter/room_shelter.yy"
+      }
+    }
+  ],
+  "RoomOrderNodes": [
+    {
+      "roomId": {
         "name": "room_shelter",
         "path": "rooms/room_shelter/room_shelter.yy"
       }
