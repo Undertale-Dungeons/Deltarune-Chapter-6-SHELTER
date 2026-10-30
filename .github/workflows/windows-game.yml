@@ -1,0 +1,39 @@
+name: Build Windows Game
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "project.godot"
+      - "scenes/**"
+      - "scripts/**"
+      - "export_presets.cfg"
+      - ".github/workflows/windows-game.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  export-windows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Create build folder
+        run: mkdir -p build
+      - name: Export Windows desktop game
+        run: |
+          docker run --rm \
+            -v "$PWD":/project \
+            -w /project \
+            barichello/godot-ci:4.3 \
+            godot --headless --path /project --export-release "Windows Desktop" /project/build/SHELTER.exe
+      - name: Upload Windows game
+        uses: actions/upload-artifact@v4
+        with:
+          name: DELTARUNE-SHELTER-Windows
+          path: |
+            build/SHELTER.exe
+            build/SHELTER.pck
+          if-no-files-found: error
