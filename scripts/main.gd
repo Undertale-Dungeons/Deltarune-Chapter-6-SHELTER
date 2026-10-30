@@ -349,7 +349,7 @@ func _draw_character(pos: Vector2, coat: Color, susie: bool) -> void:
 	draw_rect(Rect2(pos + Vector2(-10, -5), Vector2(7, 7)), Color("#17131d"))
 	draw_rect(Rect2(pos + Vector2(3, -5), Vector2(7, 7)), Color("#17131d"))
 
-func _draw_label(value: String, x: float, y: float, size: int, color: Color, align: HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> void:
+func _draw_label(value: String, x: float, y: float, size: int, color: Color, align: int = HORIZONTAL_ALIGNMENT_LEFT) -> void:
 	var width := 900.0
 	var start_x := x
 	if align == HORIZONTAL_ALIGNMENT_CENTER:
