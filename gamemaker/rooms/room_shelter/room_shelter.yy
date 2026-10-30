@@ -66,10 +66,7 @@
     }
   ],
   "name": "room_shelter",
-  "parent": {
-    "name": "Rooms",
-    "path": "folders/Rooms.yy"
-  },
+  "parent": null,
   "parentRoom": null,
   "physicsSettings": {
     "inheritPhysicsSettings": false,
