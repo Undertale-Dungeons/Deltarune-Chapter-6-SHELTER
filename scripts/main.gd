@@ -115,8 +115,7 @@ func _confirm() -> void:
 		"dialogue":
 			dialogue_index += 1
 			if dialogue_index >= dialogue.size():
-				mode = "explore"
-				message = "Move with WASD or the arrow keys. Press Z near the bunker."
+				_finish_dialogue()
 			queue_redraw()
 		"explore":
 			_interact()
@@ -220,8 +219,13 @@ func _finish_dialogue() -> void:
 			"Ralsei looks toward the endless reflections.",
 			"Ralsei: Something has been waiting for you."
 		])
+	elif _after_dialogue == "ending":
+		_after_dialogue = ""
+		mode = "ending"
+		message = "The first encounter is over. More of the chapter is still ahead."
 	else:
 		mode = "explore"
+		message = "Move with WASD or the arrow keys. Press Z to interact."
 
 func _begin_battle() -> void:
 	scene = "battle"
