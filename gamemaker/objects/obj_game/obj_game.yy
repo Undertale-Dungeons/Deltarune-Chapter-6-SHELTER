@@ -39,10 +39,7 @@
   "managed": true,
   "name": "obj_game",
   "overriddenProperties": [],
-  "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy"
-  },
+  "parent": null,
   "parentObjectId": null,
   "persistent": false,
   "physicsAngularDamping": 0.1,
