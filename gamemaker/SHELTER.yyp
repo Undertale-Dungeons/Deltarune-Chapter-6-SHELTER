@@ -1,0 +1,82 @@
+{
+  "$GMProject": "v1",
+  "%Name": "DELTARUNE SHELTER",
+  "AudioGroups": [
+    {
+      "$GMAudioGroup": "v1",
+      "name": "audiogroup_default",
+      "targets": -1
+    }
+  ],
+  "configs": {
+    "children": [],
+    "name": "Default"
+  },
+  "Folders": [
+    {
+      "$GMFolder": "v1",
+      "%Name": "Objects",
+      "folderPath": "folders/Objects.yy",
+      "name": "Objects",
+      "resourceType": "GMFolder",
+      "resourceVersion": "2.0"
+    },
+    {
+      "$GMFolder": "v1",
+      "%Name": "Rooms",
+      "folderPath": "folders/Rooms.yy",
+      "name": "Rooms",
+      "resourceType": "GMFolder",
+      "resourceVersion": "2.0"
+    }
+  ],
+  "IncludedFiles": [],
+  "isEcma": false,
+  "LibraryEmitters": [],
+  "MetaData": {
+    "IDEVersion": "2024.11.0.179"
+  },
+  "name": "SHELTER",
+  "RoomOrderNodes": [
+    {
+      "roomId": {
+        "name": "room_shelter",
+        "path": "rooms/room_shelter/room_shelter.yy"
+      }
+    }
+  ],
+  " resources": [],
+  "resources": [
+    {
+      "id": {
+        "name": "obj_game",
+        "path": "objects/obj_game/obj_game.yy"
+      }
+    },
+    {
+      "id": {
+        "name": "room_shelter",
+        "path": "rooms/room_shelter/room_shelter.yy"
+      }
+    }
+  ],
+  "TextureGroups": [
+    {
+      "$GMTextureGroup": "v1",
+      "autocrop": true,
+      "border": 2,
+      "compressFormat": " გაუჟ",
+      "directory": "textures",
+      "groupParent": null,
+      "isScaled": true,
+      "loadType": "default",
+      "mipsToGenerate": 0,
+      "name": "Default",
+      "resourceType": "GMTextureGroup",
+      "resourceVersion": "2.0",
+      "targets": -1
+    }
+  ],
+  "resourceType": "GMProject",
+  "resourceVersion": "2.0"
+}
