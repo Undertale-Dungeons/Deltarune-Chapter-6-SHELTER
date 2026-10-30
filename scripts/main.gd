@@ -3,7 +3,7 @@ extends Node2D
 const WHITE := Color(0.95, 0.94, 0.97)
 const MUTED := Color(0.68, 0.65, 0.73)
 const GOLD := Color(0.96, 0.83, 0.43)
-const FONT := ThemeDB.fallback_font
+var game_font: Font
 
 var scene := "path"
 var mode := "dialogue"
@@ -25,6 +25,7 @@ var message_timer := 0.0
 var battle_round := 0
 
 func _ready() -> void:
+	game_font = ThemeDB.fallback_font
 	get_window().title = "DELTARUNE: SHELTER"
 	_start_dialogue([
 		"The path to the bunker is quiet.",
@@ -356,7 +357,7 @@ func _draw_label(value: String, x: float, y: float, size: int, color: Color, ali
 		start_x = x - width / 2.0
 	elif align == HORIZONTAL_ALIGNMENT_RIGHT:
 		start_x = x - width
-	draw_string(FONT, Vector2(start_x, y), value, HORIZONTAL_ALIGNMENT_LEFT, width, size, color)
+	draw_string(game_font, Vector2(start_x, y), value, HORIZONTAL_ALIGNMENT_LEFT, width, size, color)
 
 func _draw_dialogue_ui() -> void:
 	if mode == "battle":
